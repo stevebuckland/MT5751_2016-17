@@ -1,0 +1,5 @@
+\contentsline {chapter}{Contents}{5}
+\contentsline {section}{\numberline {0.1}Distance Sampling}{1}
+\contentsline {section}{\numberline {0.2}Capture-Recapture}{3}
+\contentsline {section}{\numberline {0.3}SECR}{4}
+\contentsline {section}{\numberline {0.4}Occupancy}{5}

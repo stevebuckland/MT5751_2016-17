@@ -1,0 +1,156 @@
+\chapter{Distance Sampling\label{sec:dist_ex}}
+
+\toggletrue{solns}
+%\togglefalse{solns}
+
+\begin{questions}
+
+\item Show that if $n\sim\mbox{Binomial}(N,\pi_c)$, then 
+\begin{eqnarray*}
+\widehat{Var}[\hat{N}]=\frac{n(1-\pi_c)}{\pi_c^2}
+\end{eqnarray*}
+\noindent
+is an unbiased estimator of $Var[\hat{N}]$, where $\hat{N}=n/\pi_c$.
+
+\iftoggle{solns}{\begin{solution}
+We have $Var[\hat{N}] = Var[n/\pi_c] = Var[n]/\pi_c^2 = N\pi_c(1-\pi_c)/\pi_c^2 =N(1-\pi_c)/\pi_c$.
+\begin{eqnarray}
+E\left[\frac{n(1-\pi_c)}{\pi_c^2}\right]
+&=&\frac{E[n](1-\pi_c)}{\pi_c^2} \nonumber \\
+&=&\frac{N\pi_c(1-\pi_c)}{\pi_c^2} \nonumber  \\
+&=&\frac{N(1-\pi_c)}{\pi_c} \nonumber
+\end{eqnarray}
+\noindent and since this is $Var[\hat{N}]$, the estimator is unbiased.
+\end{solution}}
+
+\item As noted in class, it is usually not possible to get maximum likelihood estimators (MLEs) in closed form (i.e.~get equations with the MLE on the left and a function of the data that we can evaluate on the right). A line transect survey with a half-normal detection function ($p(x)=\exp(-x^2/(2\sigma^2))$) and without any distance truncation (i.e.~$w\rightarrow\infty$) is an exception. 
+
+\begin{parts}
+
+\item\textbf{Derive the MLE of $\sigma^2$}: On the above minke whale survey $n=90$ detections at perpendicular distances $x_1,\ldots,x_{90}$ were made. Assuming that the detection function has a half-normal form, and using no perpendicular distance truncation, show that the maximum likelihood estimator of the half normal detection function scale parameter $\sigma^2$, from the \textbf{conditional likelihood} (given $n$) is 
+\begin{eqnarray*}
+\widehat{\sigma^2}&=&\frac{\sum_{i=1}^n x_i^2}{n}
+\end{eqnarray*}
+
+\textit{\underline{Hint}}: From the definition of a normal pdf, you can show that the effective strip half-width $\mu$ is 
+\begin{eqnarray*}
+\mu&=&\int_0^\infty e^{-\frac{x^2}{2\sigma^2}}dx=\sqrt{\frac{\pi}{2}\sigma^2}.
+\end{eqnarray*}
+
+{\begin{solution}
+The conditional likelihood (given $n$) is
+\begin{eqnarray*}
+L(\sigma^2)&=&\prod_{i=1}^n\frac{\exp\left(-\frac{x_i^2}{2\sigma^2}\right)}{\int_0^\infty\exp\left(-\frac{x_i^2}{2\sigma^2}\right)dx} \\
+&=&\exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^nx_i^2\right)\left(\frac{\pi}{2}\sigma^2\right)^{-n/2}
+\end{eqnarray*}
+\noindent
+So the log-likelihood is
+\begin{eqnarray}
+l(\sigma^2)&=&-\frac{1}{2\sigma^2}\sum_{i=1}^nx_i^2-\frac{n}{2}\log(\sigma^2)+C
+\end{eqnarray}
+\noindent
+where $C$ does not involve $\sigma^2$.
+Differentiating with respect to $\sigma^2$ and equating to zero gives
+\begin{eqnarray}
+\frac{\sum_{i=1}^nx_i^2}{\sigma^2}&=&n \nonumber \\
+\Rightarrow\widehat{\sigma^2}&=&\frac{\sum_{i=1}^nx_i^2}{n} \nonumber
+\end{eqnarray}
+\end{solution}}
+
+\item \textbf{Calculate the MLE of $\sigma^2$}: Use the data in the object \verb|minke| (see computing exercise below), to calculate the MLE of $\sigma^2$ for the minke whale survey, assuming that there was no perpendicular distance truncation. (You may find it useful to know that you can get rid of \verb|NA|s when doing calculations in \verb|R| by using the command \verb|na.omit|. For example, \verb|na.omit(c(1,NA,2)| returns \verb|c(1,2)|.)
+
+{\begin{solution}
+\begin{verbatim}
+> x=na.omit(minke$distance)
+> sigma2.hat=sum(x^2)/length(x)
+> sigma2.hat
+[1] 0.4706733
+\end{verbatim}
+\end{solution}}
+
+\item\textbf{Derive the full likelihood MLE of $D$ and $\sigma^2$ under a Poisson model}: Assume that the number of whales detected ($n$) has a Poisson distribution with rate parameter $Da$, where $D$ is density, $a=2L\mu$ is the \textit{effective area} surveyed, $L$ is the total transect line length and $\mu$ the effective strip half-width. Assuming that there was no perpendicular distance truncation (as in the question above), do the following:
+
+\begin{subparts}
+
+\item Show that the log-likelihood function $l(D,\sigma^2)$ is
+\begin{eqnarray*}
+l(D,\sigma^2)&=&n\ln(D)-D\sqrt{2L^2\pi}\sqrt{\sigma^2}
+-\frac{\sum{x_i^2}}{2\sigma^2}+C
+\end{eqnarray*}
+\noindent
+where $C$ is some constant that does not involve $D$ or $\sigma^2$.
+
+{\begin{solution}
+The effective area of the survey is $a=2\mu L=\sqrt{2L^2\pi\sigma^2}$ and hence the likelihood function is
+\begin{eqnarray*}
+L(D,\sigma^2)
+&=&\frac{\left(D\sqrt{2L^2\pi\sigma^2}\right)^n\exp\left(-D\sqrt{2L^2\pi\sigma^2}\right)}{n!}
+\exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^nx_i^2\right)\left(\frac{\pi}{2}\sigma^2\right)^{-n/2}
+\end{eqnarray*}
+\noindent
+So the log-likelihood function is
+\begin{eqnarray*}
+l(D,\sigma^2)
+&=&n\log(D)+\frac{n}{2}\log(\sigma^2)-D\sqrt{L^2 2\pi}\sqrt{\sigma^2}-\frac{\sum_{i=1}^n x_i^2}{2\sigma^2}-\frac{n}{2}\log(\sigma^2)+C \\
+&=&n\log(D)-D\sqrt{L^2 2\pi}\sqrt{\sigma^2}-\frac{\sum_{i=1}^n x_i^2}{2\sigma^2}+C
+\end{eqnarray*}
+\end{solution}}
+
+\item By differentiating $l(D,\sigma^2)$ with respect to $D$ and then with respect to $\sigma^2$ (not $\sigma$), show that the MLEs of $D$ and $\sigma^2$ are
+\begin{eqnarray*}
+\hat{D}&=&\frac{n}{2L\hat{\mu}}\;=\;\frac{n}{2L\sqrt{\frac{\pi}{2}\widehat{\sigma^2}}}\;\;\;\;\;\;\mbox{and} \\
+\widehat{\sigma^2}&=&\frac{\sum_{i=1}^n x_i^2}{n}
+\end{eqnarray*}
+
+{\begin{solution}
+\todo{correction}
+\begin{eqnarray*}
+\frac{\partial l(D,\sigma^2)}{\partial D}
+&=&\frac{n}{D}-\sqrt{2L^2\pi}\sqrt{\sigma^2} \\
+\frac{\partial l(D,\sigma^2)}{\partial \sigma^2}
+&=&-D\sqrt{2L^2\pi}\frac{1}{2}\frac{1}{\sqrt{\sigma^2}}+\frac{\sum_{i=1}^n x_i^2}{2(\sigma^2)^2} \end{eqnarray*}
+\noindent
+Setting both of these to zero, we get
+\begin{eqnarray*}
+\frac{n}{D}&=&\sqrt{2L^2\pi}\sqrt{\sigma^2} \\
+\Rightarrow D&=&\frac{n}{\sqrt{2L^2\pi}\sqrt{\sigma^2}} \;\;\;\;\;\mbox{and} \\
+D\sqrt{2L^2\pi}\frac{1}{2}\frac{1}{\sqrt{\sigma^2}}&=&\frac{\sum_{i=1}^n x_i^2}{2}\frac{1}{(\sigma^2)^2}.
+\end{eqnarray*}
+\noindent
+Substituting the second of these equations for $D$ in the third equation gives\todo{correction}
+\begin{eqnarray*}
+\frac{n}{2}\frac{1}{\sqrt{\sigma^2}}
+&=&
+\frac{\sum_{i=1}^n x_i^2}{2}\frac{1}{(\sigma^2)^2} \\
+\Rightarrow\frac{n}{2}&=&\frac{\sum_{i=1}^n x_i^2}{2\sigma^2} \\
+\Rightarrow\widehat{\sigma^2}&=&\frac{\sum_{i=1}^n x_i^2}{n}.
+\end{eqnarray*}
+\noindent
+And substituting this back into the equation for $D$ above, we get
+\begin{eqnarray*}
+\hat{D}&=&\frac{n}{\sqrt{2L^2\pi}\sqrt{\widehat{\sigma^2}}}
+\;=\;\frac{n}{2L\sqrt{\frac{\pi}{2}\widehat{\sigma^2}}}.
+\end{eqnarray*}
+\end{solution}}
+
+\item Using these estimators, calculate the full likelihood MLE of density $D$ from the minke whale survey data.
+
+{\begin{solution}
+Using $\hat{\sigma}=0.4706733$ as calculated above:
+\begin{verbatim}
+> L=sum(unique(minke$Effort)) # this works because no two transects are 
+                              # the same length in this dataset
+> L
+[1] 1842.79
+> D.hat=length(x)/(2*L*sqrt(pi*sigma2.hat/2))
+> D.hat
+[1] 0.02839991
+\end{verbatim}
+\end{solution}}
+
+\end{subparts}
+
+\end{parts}
+
+\end{questions}
+

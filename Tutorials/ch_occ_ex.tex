@@ -1,0 +1,148 @@
+\chapter{Occupancy\label{sec:occ_ex}}
+
+
+Notation used here is the same as that used in lectures.
+
+\begin{questions}
+
+\item Show that 
+
+\begin{eqnarray*}
+L(\Psi,p)&=&\left[\Psi^n p^{\delta_{\cdot\cdot}}(1-p)^{nT-\delta_{\cdot\cdot}}\right]\left[1-\Psi p_\cdot\right]^{N-n}
+\end{eqnarray*}
+can be written as
+\begin{eqnarray*}
+L(\Psi,p)&=&\left[\Psi p_\cdot\right]^n\left[1-\Psi p_\cdot\right]^{N-n}\left[\left(\frac{p}{1-p}\right)^{\delta_{\cdot\cdot}}\left\{\frac{(1-p)^T}{p_\cdot}\right\}^n\right]
+\end{eqnarray*}
+
+{\begin{solution}
+Write $(1-p)^{nT-\delta_{\cdot\cdot}}$ in the first equation as $\frac{\left\{(1-p)^T\right\}^n}{(1-p)^{\delta_{\cdot\cdot}}}$ and then multiply by $\frac{p_\cdot^n}{p_\cdot^n}$. This gives the desired result.
+\end{solution}}
+
+\item Explain why you do or do not need to multiply the above likelihood equation by the binomial coefficient ${N\choose n}$ in order to obtain maximum likelihood estimates of $\Psi$ and $p$ from this equation.
+
+{\begin{solution}
+The term $N\choose n$ does not involve any parameters and so does not affect which parameter values correspond to the maximum of the likelihood.
+\end{solution}}
+
+\item Write down the likelihood for an occupancy model with constant detection probability $p$ for a (rather artificially simple) 3-occasion survey of 10 sites in which 7 sites have capture history 000 and the other three capture histories are 011, 1$\cdot$0 and $\cdot\cdot$1, where ``$\cdot$'' indicates that the site was not surveyed on the given occasion.
+
+{\begin{solution}
+The probability of observing $000$ is the probability that the site is unoccupied, $(1-\Psi)$, plus the probability that it is occupied but occupancy went undetected on all three occasions, $(1-p)^3\times\Psi$. So the probability of 7 sites having this capture history is $\left[(1-\Psi)+(1-p)^3\Psi\right]^7$. 
+
+The probability of observing $011$ is the probability that the site is occupied ($\Psi$) multiplied be the probability of missing occupancy on the first occasion and detecting it on the next two, $(1-p)p^2$, i.e., $(1-p)p^2\Psi$.
+
+The probability of observing $1\cdot 0$ is just the probability of observing $10$ if you had only two occasions (not three): $p(1-p)\Psi$.
+
+Similarly, the probability of observing $\cdot\cdot1$ is $p\Psi$.
+
+The likelihood is the product of the above:
+
+$$L(\Psi,p)=\left[(1-\Psi)+(1-p)^3\Psi\right]^7\times (1-p)p^2\Psi\times p(1-p)\Psi\times p\Psi$$
+
+And with some rearranging you see that $\left[(1-\Psi)+(1-p)^3\Psi\right]=\left[1-p_\cdot\Psi\right]$, where $p_\cdot=1-(1-p)^3$, so after collecting the other terms together we get
+
+$$L(\Psi,p)=\left[1-p_\cdot\Psi\right]^7(1-p)^2p^4\Psi^3$$.
+
+\end{solution}}
+
+\item The \verb|RMark| dataset \verb|Donovan.7| contains data from a 5-occasion occupancy survey of some species.
+
+\begin{parts}
+
+\item Obtain an estimate of probability of occupancy per site ($\Psi$), together with an approximate 95\% confidence interval for this probability, assuming perfect detection of the species within each site.
+
+{\begin{solution}
+\verb|R| code:
+\begin{verbatim}
+library(RMark, quietly=TRUE)
+data(Donovan.7)
+N.total <- dim(Donovan.7)[1]
+T.occ <- nchar(Donovan.7$ch[1])
+n.occupied <- sum(Donovan.7$ch!="00000")
+Psi.0 <- n.occupied/N.total
+Psi.0.ci <- Psi.0 + c(-1.96,1.96)*sqrt(Psi.0*(1-Psi.0)/N.total) # assuming normality
+\end{verbatim}
+This gives an estimate $\Psi=0.85$ with 95\% confidence interval (CI) $(0.694; 1.006)$. The fact that the CI goes above 1 indicates that the normal approximation is not adequate. We can use the \verb|R| function \verb|pbinom| to get an exact confidence interval, by evaluating it with various $p$s, $n=17$ (the observed number of ``successes'') and $N=20$ (the number of ``trials''). Since \verb|pbinom(17,20,0.603)|$\approx 0.975$ and \verb|pbinom(17,20,0.9679)|$\approx 0.025$, an exact 95\% CI is (0.603; 0.9679).
+
+\end{solution}}
+
+\item Without fitting a model, decide whether or not the maximum likelihood estimates of an occupancy model fitted to these data assuming constant detection probability $p$, satisfy these equations:
+
+\begin{eqnarray*}
+\hat{\Psi}\;=\;\frac{n}{N\hat{p}_\cdot}&\;\;\;\;\;\;\;\;&\frac{\hat{p}}{\hat{p}_\cdot}\;=\;\frac{\delta_{\cdot\cdot}}{nT}.
+\end{eqnarray*}
+
+{\begin{solution}
+\verb|R| code to do the calculation:
+\begin{verbatim}
+line <- paste(Donovan.7$ch,collapse="")
+d.. <- 0
+for(i in 1:nchar(line)) if(substr(line,i,i)=="1") d..=d..+1
+p.hat <- d../(N.total*T.occ)
+inequality1 <- (1-n.occupied/N.total)
+inequality2 <- (1-d../(N.total*T.occ))^T.occ
+Donovan.7.null <- mark(Donovan.7,model="Occupancy", output=FALSE)
+p <- get.real(Donovan.7.null, "p")[1] # p same for all occasions, 
+                                      # so just use first here 
+pdot <- 1-(1-p)^T.occ
+Psi <- get.real(Donovan.7.null, "Psi")
+psi.satisfy <- n.occupied/(N.total*pdot)
+satisfy1 <- p/pdot
+satisfy2 <- d../(n.occupied*T.occ)
+\end{verbatim}
+Guillera-Arroita \textit{et al.} (2010) showed that MLEs satisfy the equations above providing that $\left(1-\frac{1}{N}\right)\geq\left(1-\frac{\delta_{\cdot\cdot}}{NT}\right)^T$. The above calculations have $\left(1-\frac{1}{N}\right)=0.15$ and $\geq\left(1-\frac{\delta_{\cdot\cdot}}{NT}\right)^T=0.009$. So the inequality is satisfied and hence the MLEs satisfy the equations above.
+
+\end{solution}}
+
+
+\item Using the \verb|RMark| function \verb|mark|, fit occupancy models to these data that assume (i) that there is no heterogeneity in detection probability, (ii) that detection probabilities arise as a are each one of a finite number of underlying unobserved detection probabilities, and (ii) that detection probability depends on (unobserved) abundance at the site, which is assumed to follow a Poisson distribution.
+
+{\begin{solution}
+\verb|R| code to do this:
+\begin{verbatim}
+Donovan.7.het <- mark(Donovan.7,model="OccupHet", output=FALSE, silent=TRUE)
+Donovan.7.poisson <- mark(Donovan.7,model="OccupRNPoisson", output=FALSE, silent=TRUE)
+models.for.7 <- collect.models(c("Donovan.7.null","Donovan.7.het","Donovan.7.poisson"))
+\end{verbatim}
+The $\Delta$AICs are 0, 4.634 and 7.428 for models \verb|Donovan.7.poisson|,  \verb|Donovan.7.null| and  \verb|Donovan.7.het|, respectively.
+
+\end{solution}}
+
+\item Use one of these fitted models to verify your answer to part (b) of this question.
+
+{\begin{solution}
+Part (b) has constant $p$ and constant $\Psi$ so we need to use the model \verb|Donovan.7.null| to verify the answer to part (b).
+
+Now $\hat{\Psi}=0.85156$ and $\frac{n}{N\hat{p}_\cdot}=0.85156$, so the first likelihood equation is satisfied.
+
+Also $\frac{\hat{p}}{\hat{p}_\cdot}0.71765$ and $\frac{\delta_{\cdot\cdot}}{nT}0.71765$, so the second likelihood equation is satisfied. \end{solution}}
+
+\item Using the best of your fitted models, estimate the probability of presence at each of the 20 sites in the survey.
+
+{\begin{solution}
+Using \verb|Donovan.7.poisson| to do this because it has the smallest AIC, the relevant \verb|R| code is:
+\begin{verbatim}
+r <- get.real(Donovan.7.poisson, "r")
+D <- get.real(Donovan.7.poisson, "Lambda")
+# see what max z is sensible:
+z <- 0:20
+plot(z,ppois(z,D),type="l", main="Plot to determine maximum abundance \nover which to sum\nfor conditional occupancy")
+# denominator of Bayes Theorem:
+pmiss <- sum((1-r)^z*dpois(z,D))
+# numerator of Bayes Theorem:
+num.bayes <- sum((1-r)^z[-1]*dpois(z[-1],D))
+Pr.presence <- num.bayes/pmiss
+# Check that it is less than the unconditional prob present:
+uncond.Pr.presence <- 1-dpois(0,D)
+\end{verbatim}
+This gives parameter estimates $\hat{r}=0.462$ SE$(\hat{r})=0.409$ and $\hat{\lambda}=2.089$ with SE$(\hat{\lambda})0.295$.
+
+The probability of presence on sites on which presence has been observed is obviously 1. Applying Bayes theorem, Pr(presence|observed absence)=0.675 for all sites without observed presence.  This contrasts with the unconditional Pr(presence)=0.876.
+
+\end{solution}}
+
+\end{parts}
+
+
+\end{questions}

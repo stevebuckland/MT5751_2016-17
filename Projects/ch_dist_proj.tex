@@ -1,0 +1,19 @@
+\chapter{Distance Sampling\label{sec:dist_proj}}
+
+\begin{center}
+\textbf{Submit via MMS before midnight on Monday the 16th February}\footnote{The School lateness penalty policy is as follows: A late piece of work is penalised with an initial penalty of 15\% of the maximum available mark (or 3 marks if anyone is marking on the University's 20-point scale), and then a further 5\% (1 mark on the 20-point scale) per 8-hour period, of part thereof.}
+\end{center}
+
+The file \verb|bw.csv| in folder ``\verb|Exercises and Projects|'' on MMS contains the survey data from the bowhead whale survey described in the first lecture, and in the paper \\
+
+Rekdal, S.L., Hansen, R.G., Borchers, D.L., Bachmann, L., Laidre, K.L., Wiig, O., Nielsen, N.H., Fossette, S., Tervo, O. and Heide-J{\o}rgensen, M.P. 2014. Trends in bowhead whales in West Greenland: Aerial surveys vs. genetic capture-recapture analyses. \textit{Marine Mammal Science}. \textbf{31}: 133-154\\
+
+which is on MMS in the folder ``\verb|Literature|''.\\
+
+Read these data into \verb|R| with the command \verb|read.csv|. (Use \verb|?read.csv| to find out about this command.) Having done that, use the \verb|R| package \verb|Distance| to obtain the best estimate you can of bowhead whale and group abundance in this survey region from these data, together with a 95\% confidence intervals. \\
+
+By considering the CV of the group abundance and individual abundance estimates for stratum 2 (as an example), verify that \verb|Distance| has not used the Delta method to calculate the CV of individual abundance, given the CVs of group abundance and mean group size. (Give brief details of your calculations in your report.) Look at the help for the function \verb|dht| (which \verb|Distance| uses to estimate abundance from fitted models) to see how the CVs and confidence intervals were calculated. \\
+
+Wite up your analysis in the form of a \textit{short} scientific paper (you could use Rekdal, \textit{et al.} (2014) as a rough guide to the structure of your paper). Your paper should be no more than two A4 pages and include a brief abstract. You can restrict yourself to a very brief summary of the survey (a few sentences), directing the reader to Rekdal, \textit{et al.} (2014) for details. \\
+
+You should describe the estimation methods used for point and interval estimation, the key aspects of your results, and what you conclude about bowhead whale abundance in the survey area from your analysis. Do not include any code in your paper. You can include it as an appendix if you would like to do so. %If your estimate of total abundance is very different from that obtained from the survey analysis in Rekdal, \textit{et al.} (2014), you should say briefly why you think this is. (Note that you do \textit{not} need to understand the detail of the analysis methods in Rekdal, \textit{et al.} (2014) to do this!)

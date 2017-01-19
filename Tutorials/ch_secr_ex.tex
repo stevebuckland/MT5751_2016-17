@@ -1,0 +1,305 @@
+\chapter{SECR\label{sec:secr_ex}}
+
+
+You can take this general likelihood function for SECR surveys with constant animals density, as given:
+\begin{eqnarray}
+L(D,\boldsymbol{\theta})&=&\frac{(Da)^ne^{-Da}}{n!}
+\prod_{i=1}^n\frac{\int P(\mathbf{c}_i|\mathbf{x})d\mathbf{x}}
+{a}.
+\label{eq:secrlik}
+\end{eqnarray}
+
+Notation is the same as that used in notes.
+
+\begin{questions}
+
+\item Consider an SECR survey with \textbf{count detectors}, in which animal density is assumed to be constant in space and animals are detected independently with a mean detection rate $\lambda_k(\mathbf{x})$ at detector $k$, that depends only on the distance of the detector from animal activity centre, $\mathbf{x}$.
+
+\begin{parts}
+\item Write down an expression for the probability that at least one detector detects an animal with activity centre at $\mathbf{x}$ on at least one occasion.
+
+{\begin{solution}
+Count detectors have independent detections at each trap (conditional on animal activity centre, $\mathbf{x}$), and they detect individuals multiple times. We can model the number of detections of an individual at detector $k$ as a Poisson random variable ($\tau_k$, say). Hence $p_k(\mathbf{x})=1-\mathbb{P}(\tau_k=0|\mathbf{x})=1-\exp(-\lambda_k(\mathbf{x})$. The probability that at least one detector detects an animal with activity centre at $\mathbf{x}$ is therefore
+\begin{eqnarray}
+p_\cdot(\mathbf{x})&=&1-\prod_{s=1}^S\prod_{k=1}^K\left[1-\left(1-e^{-\lambda_k(\mathbf{x})}\right)\right]
+\;=\;1-\prod_{s=1}^S\prod_{k=1}^K e^{-\lambda_k(\mathbf{x})} \nonumber 
+\end{eqnarray}
+\end{solution}}
+
+\item Assuming that the number of detected animals has a Poisson distribution, write down the likelihood function for a survey with $S$ occasions and $K$ detectors each occasion, on which individual $i$ is detected $\tau_{iks}$ times by detector $k$ on occasion $S$ ($k=1,\ldots,K; s=1,\ldots,S$).
+
+{\begin{solution}
+The likelihood is as given above, but we need to specify $\mathbb{P}(\mathbf{c}_i|\mathbf{x})$. We can write the capture history for animal $i$ as $\mathbf{c}_i=\{\tau_{iks}\}$, where $\tau_{iks}$ is the number of times animal $i$ was detected by detector $k$ on occasion $s$ (and the curly brackets indicate the set of all $\tau_{iks}$). Then, assuming that $\tau_{iks}$ has a Poisson distribution:
+\begin{eqnarray}
+\mathbb{P}(\mathbf{c}_i|\mathbf{x})&=&\prod_{s=1}^S\prod_{k=1}^K\frac{\lambda_k(\mathbf{x})^{\tau_{iks}}e^{-\lambda_k(\mathbf{x})}}{\tau_{iks}!} \nonumber
+\end{eqnarray}
+\end{solution}}
+
+\item Hence show that in this case occasion is irrelevant, i.e., that (aside from a constant that does not involve parameters) the above likelihood is identical to that for the case in which only the summed capture frequencies across all occasions ($\tau_{i\cdot k}=\sum_s\tau_{isk}$) and not the frequencies within each occasion, are available.
+
+{\begin{solution}
+\begin{eqnarray}
+\mathbb{P}(\mathbf{c}_i|\mathbf{x})&=&\prod_{s=1}^S\prod_{k=1}^K\frac{\lambda_k(\mathbf{x})^{\tau_{iks}}e^{-\lambda_k(\mathbf{x})}}{\tau_{iks}!} \nonumber \\
+&=&\prod_{k=1}^K\frac{\lambda_k(\mathbf{x})^{\sum_k\tau_{iks}}e^{-S\lambda_k(\mathbf{x})}}{\prod_{s=1}^S\tau_{iks}!}
+\;=\;\prod_{k=1}^K\frac{\lambda_k(\mathbf{x})^{\tau_{i\cdot k}}e^{-S\lambda_k(\mathbf{x})}}{\prod_{s=1}^S\tau_{iks}!} \nonumber
+\end{eqnarray}
+
+So ignoring the denominator, which does not involve parameters, the likelihood using all the $\tau_{iks}$s is identical to that using only the $\tau_{i\cdot k}$s, i.e. the likelihood does not change when you ignore occasion and deal only with the total number of captures across all occasions.
+
+\end{solution}}
+
+\end{parts}
+
+\item Consider an SECR survey of birds using $S$ occasions, each with the same $K$ mist nets to catch birds, in which the probability of catching a bird with activity centre at $\mathbf{x}$ in net $k$, on any one occasion, in the absence of any other nets, is $1-e^{\lambda_k(\mathbf{x})}$.
+
+\begin{parts}
+\item Write down an expression for the probability that on any single occasion, the bird is caught in none of the $K$ nets used in the survey.
+
+{\begin{solution}
+\begin{eqnarray}
+1-p_\cdot(\mathbf{x})&=&\prod_{k=1}^K\left[1-\left(1-e^{-\lambda_k(\mathbf{x})}\right)\right] \nonumber \\
+&=&\prod_{k=1}^Ke^{-\lambda_k(\mathbf{x})}\;=\;e^{-\sum_k\lambda_k(\mathbf{x})} \nonumber
+\end{eqnarray}
+
+\end{solution}}
+
+\item Hence obtain an expression for the probability that on any single occasion, the bird is caught by at least one of the $K$ nets. 
+
+{\begin{solution}
+\begin{eqnarray}
+p_\cdot(\mathbf{x})&=&1-e^{-\sum_k\lambda_k(\mathbf{x})} \nonumber
+\end{eqnarray}
+\end{solution}}
+
+\item Obtain an expression for the probability that the bird is caught by at least one of the $K$ nets on at least one of $S$ occasions.
+
+{\begin{solution}
+On occasion $s$:
+\begin{eqnarray}
+p_{\cdot s}(\mathbf{x})&=&1-\prod_{s=1}^Se^{-\sum_k\lambda_k(\mathbf{x})}\;=\;1-e^{-S\sum_k\lambda_k(\mathbf{x})} \nonumber
+\end{eqnarray}
+\end{solution}}
+
+\item Using the above probability, show that in this case the effective area covered in the survey is
+\begin{eqnarray*}
+a&=&A-\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}.
+\end{eqnarray*}
+\noindent
+where $A$ is the area of the region from which birds could be caught in the nets and the integral is over this region.
+
+{\begin{solution}
+\begin{eqnarray}
+a&=&\int 1-e^{-S\sum_k\lambda_k(\mathbf{x})}d\mathbf{x} \nonumber \\
+&=&\int 1d\mathbf{x}-\int e^{-S\sum_k\lambda_k(\mathbf{x})}d\mathbf{x} \nonumber \\
+&=&A-\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x} \nonumber
+\end{eqnarray}
+\end{solution}}
+
+\item (\textit{Difficult question}) If the conditional probability that a bird is caught in net $k$ on occasion $s$, given that it was caught in one of the nets on this occasion, is $\lambda_k(\mathbf{x})/\sum_k\lambda_k(\mathbf{x})$, show that the appropriate likelihood for this survey is
+\begin{eqnarray*}
+L(D,\boldsymbol{\theta})
+&=&
+\frac{D^ne^{-Da}}{n!}
+\prod_{i=1}^n\int\prod_{s=1}^S
+\left[e^{\sum_k\lambda_k(\mathbf{x})}\right]^{1-\delta_{i\cdot s}}
+\prod_{k=1}^K
+\left[\frac{\lambda_k(\mathbf{x})}{\sum_{k=1}^K\lambda_k(\mathbf{x})}
+\left(1-e^{\sum_k\lambda_k(\mathbf{x})}\right)\right]^{\delta_{iks}}d\mathbf{x},
+\end{eqnarray*}
+\noindent
+where $n$ is the number of birds caught, $\delta_{iks}=1$ if bird $i$ was caught in net $k$ on occasion $s$, and $\delta_{iks}=0$ otherwise, $\delta_{i\cdot s}=1$ if bird $i$ was caught in any net on occasion $s$, and $\delta_{i\cdot s}=0$ otherwise, $D$ is bird density, and $\boldsymbol{\theta}$ is the parameter vector of $\lambda_k(\mathbf{x})$.
+
+{\begin{solution}
+The key is working out what $P(\mathbf{c}_i|\mathbf{x})$ is. We know from above the following:
+\begin{itemize}
+\item The probability of a bird at $\mathbf{x}$ going uncaptured on occasion $s$ is $e^{-\sum_k\lambda_k(\mathbf{x})}$.
+\item The probability of being caught at all on occasion $s$ is $1-e^{-\sum_k\lambda_k(\mathbf{x})}$ and 
+\item The conditional probability of being caught in net $k$, give capture in some net on occasion $s$ is $\lambda_k(\mathbf{x})/\sum_k\lambda_k(\mathbf{x})$.
+\end{itemize}
+Hence the probability of being caught \textit{and} being in trap $k$ on occasion $s$ is
+\begin{eqnarray}
+p_{ks}(\mathbf{x}))&=&\frac{\lambda_k(\mathbf{x})}{\sum_k\lambda_k(\mathbf{x})}\left(1-e^{-\sum_k\lambda_k(\mathbf{x})}\right). \nonumber
+\end{eqnarray}
+
+Assuming that captures are independent between occasions, $P(\mathbf{c}_i|\mathbf{x})=\prod_{s=1}^SP(c_{is}|\mathbf{x})$, where $c_{is}=(\delta_{i\cdot s},\delta_{i1s},\ldots,\delta_{iKs})$ is the spatial ``capture history'' on occasion $s$. (Note that at most one of $\delta_{i1s},\ldots,\delta_{iKs}$ can be equal to 1 and all the others must be zero, since birds can only be caught in one trap on any occasion.)
+
+If $\delta_{i\cdot s}=0$ then the bird was not captured on occasion $s$ and so $P(c_{is}|\mathbf{x})=e^{-\sum_k\lambda_k(\mathbf{x})}$. Otherwise exactly one of $\delta_{i1s},\ldots,\delta_{iKs}$ is 1 (the others being zero), and if it is $\delta_{ik^*s}$ that is 1 then $P(c_{is}|\mathbf{x})=\frac{\lambda_{k^*}(\mathbf{x})}{\sum_k\lambda_k(\mathbf{x})}\left(1-e^{-\sum_k\lambda_k(\mathbf{x})}\right)$. We can write this all succinctly as follows:
+\begin{eqnarray}
+P(c_{is}|\mathbf{x})&=&\left[e^{\sum_k\lambda_k(\mathbf{x})}\right]^{1-\delta_{i\cdot s}}
+\prod_{k=1}^K
+\left[\frac{\lambda_k(\mathbf{x})}{\sum_{k=1}^K\lambda_k(\mathbf{x})}
+\left(1-e^{\sum_k\lambda_k(\mathbf{x})}\right)\right]^{\delta_{iks}}
+\end{eqnarray}
+Substitution into $P(\mathbf{c}_i|\mathbf{x})=\prod_{s=1}^SP(c_{is}|\mathbf{x})$ and then into Equation~(\ref{eq:secrlik}) gives the required likelihood.
+
+\end{solution}}
+
+\item Suppose now that a bird's sex ($z$ say, with $z=0$ for males, $z=1$ for females) affects $\lambda_k(\mathbf{x})$ as follows:
+\begin{eqnarray*}
+\lambda_k(\mathbf{x},z)&=&\lambda_k(\mathbf{x})+\phi^z
+\end{eqnarray*}
+and that $\pi_1$ is the probability of a bird being female.
+
+\begin{subparts}
+
+\item Show that in this case
+\begin{eqnarray*}
+a(z)&=&\left\{
+\begin{array}{ll} 
+a; & z=0 \\ 
+A-e^{SK\phi}\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x} & z=1. 
+\end{array} \right.
+\end{eqnarray*}
+
+{\begin{solution}
+For males $\lambda_k(\mathbf{x},z=0)=\lambda_k(\mathbf{x})+\phi^0$$=\lambda_k(\mathbf{x})$ and so $a(z=0)$ is equal to the $a$ from the earlier parts of this question.
+
+For females,
+\begin{eqnarray}
+a(z=1)&=&\int 1-e^{-S\sum_k[\lambda_k(\mathbf{x})+\phi]}d\mathbf{x} \nonumber \\
+&=&\int 1d\mathbf{x}-\int e^{-S\sum_k\lambda_k(\mathbf{x})+SK\phi}d\mathbf{x} \nonumber \\
+&=&A-e^{SK\phi}\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x} \nonumber
+\end{eqnarray}
+
+\end{solution}}
+
+\item Hence show that the effective area for the survey is
+\begin{eqnarray*}
+a&=&A-\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}\times\left[1-\pi_1\left(1-e^{SK\phi}\right)\right].
+\end{eqnarray*}
+
+{\begin{solution}
+The pmf of $z$ is $f(z)=\pi_1^z(1-\pi_1)^{1-z}$ (it is a Bernoulli random variable). Before we do the survey, we don't know what any $z$s are and so to calculate the effective area we take expectation over $z$:
+\begin{eqnarray}
+a&=&\sum_{z=0}^1a(z)f(z) \nonumber \\
+&=&\left[A-\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}\right](1-\pi_1)
++ \left[A-e^{SK\phi}\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}\right]\pi_1 \nonumber \\
+&=&A-\left[\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}\right]\left[(1-\pi_1)+e^{SK\phi}\pi_1\right] \nonumber \\
+&=&A-\int\exp\left\{-\sum_k S\lambda_k(\mathbf{x})\right\}d\mathbf{x}\times\left[1-\pi_1\left(1-e^{SK\phi}\right)\right]. \nonumber
+\end{eqnarray}
+
+\end{solution}}
+
+%\item If you observe the sex of all the birds that you catch, show that the appropriate likelihood for this survey is 
+%\begin{eqnarray*}
+%L(D,\boldsymbol{\theta})
+%&=&
+%\frac{D^n\left[(1-\pi_1)e^{-Da}+\pi_1e^{-Da(1)}\right]}{n!} \\
+%& &\times
+%\prod_{i=1}^n\prod_{s=1}^S
+%\left[e^{\sum_k\lambda_k(\mathbf{x})}\right]^{1-\delta_{i\cdot s}}
+%\prod_{k=1}^K
+%\frac{\lambda_k(\mathbf{x},z)}{\sum_{k=1}^K\lambda_k(\mathbf{x},z)}
+%\left[1-e^{\sum_k\lambda_k(\mathbf{x},z)}\right]^{\delta_{iks}},
+%\end{eqnarray*}
+
+\end{subparts}
+
+\end{parts}
+
+
+
+\item Below is output from an SECR model fit using the package \verb|secr|, that was obtained using this command: \\
+\verb|secr.fit(capthist = data, buffer = 1000, detectfn = 0)|.\\
+Five numbers have been deleted from the output and replaced by \verb|<MISSING1>| to \verb|<MISSING5>|.
+\begin{verbatim}
+Detector type     proximity 
+Detector number   94 
+Average spacing   250 m 
+x-range           -1500 1500 m 
+y-range           -1500 1500 m 
+N animals       :  20  
+N detections    :  30 
+N occasions     :  7 
+Mask area       :  2416.992 ha 
+
+Model           :  D~1 g0~1 sigma~1 
+Fixed (real)    :  none 
+Detection fn    :  halfnormal
+Distribution    :  poisson 
+N parameters    :  3 
+Log likelihood  :  -145.7055 
+AIC             :  297.4109 
+AICc            :  298.9109 
+
+Beta parameters (coefficients) 
+           beta   SE.beta       lcl       ucl
+D     -3.706471 0.2962042 -4.287021 -3.125921
+g0    -3.047745 0.4504881 -3.930685 -2.164804
+sigma  5.540604 0.1721173  5.203260  5.877947
+
+Variance-covariance matrix of beta parameters 
+                 D          g0        sigma
+D      0.087736926 -0.04812886 -0.006317331
+g0    -0.048128858  0.20293955 -0.055537147
+sigma -0.006317331 -0.05553715  0.029624348
+
+Fitted (real) parameters evaluated at base levels of covariates 
+       link     estimate  SE.estimate          lcl          ucl
+D       log   <MISSING1>  0.007438526   <MISSING4>   <MISSING5>
+g0    logit   <MISSING2>  0.019488786   0.01925229   0.10295588
+sigma   log   <MISSING3> 44.187805675 181.86419237 357.07557098
+\end{verbatim}
+
+\begin{parts}
+
+\item Write down an expression for $p_{ks}(\mathbf{x})$, the probability of detector $k$ detecting an individual with location $\mathbf{x}$ on occasion $s$.
+
+{\begin{solution}
+\begin{eqnarray}
+p_{ks}(\mathbf{x})&=&
+g_0\exp\left(-\frac{d_k(\mathbf{x})^2}{2\sigma^2}\right)
+\end{eqnarray}
+\noindent
+where $d_k(\mathbf{x})$ is the distance from $\mathbf{x}$ to detector $k$.
+
+\end{solution}}
+
+\item Write down an expression for the likelihood function for this survey.
+
+{\begin{solution}
+From the output you see that the detector type is \verb|proximity|, which means that detections of animals are independent between detectors (given $\mathbf{x}$) and that capture data are contained in binary variables ($\delta_{iks}$, for animal $i$ in detector $k$ on occasion $s$: 1 for detection, 0 for non-detection). The likelihood is therefore as in Equation~(\ref{eq:secrlik}), with
+\begin{eqnarray}
+\mathbb{P}(\mathbf{c}_i|\mathbf{x})&=&\prod_{s=1}^S\prod_{k=1}^K
+p_{ks}(\mathbf{x})^{\delta_{iks}}[1-p_{ks}(\mathbf{x})]^{1-\delta_{iks}}\nonumber
+\end{eqnarray}
+\noindent 
+where $\delta_{iks}$ is as in part (a).
+
+
+\end{solution}}
+
+\item Explain what each of the parameters in the ``\verb|Fitted (real)|'' table is.
+
+{\begin{solution}
+\begin{itemize}
+\item \verb|D| is the animal density (number of animals per unit area).
+\item \verb|g0| is the probability that an animal with activity centre at a distanze zero from a detector is detected by the detector.
+\item \verb|sigma| is the scale parameter that controls the detection range (larger \verb|sigma| implying longer range).
+\end{itemize}
+\end{solution}}
+
+\item Calculate \verb|<MISSING1>| to \verb|<MISSING5>|.
+
+{\begin{solution}
+\begin{itemize}
+\item \verb|<MISSING1>|=$\exp(-3.706471)=0.02456406$
+\item \verb|<MISSING2>|=$\exp(-3.047745)/[1+\exp(-3.047745)]=0.04531493$
+\item \verb|<MISSING3>|=$\exp(5.540604)=254.8319$
+\item \verb|<MISSING4>|=$\exp(-4.287021)=0.01374581$
+\item \verb|<MISSING5>|=$\exp(-3.125921)=0.04389649$
+\end{itemize}
+
+\end{solution}}
+
+\item Explain why the \verb|buffer| used in fitting is or is not adequate.
+
+{\begin{solution}
+It seems adequate. The buffer is 1,000m, which is almost 4$\sigma$, by which distance the half-normal detection function is very close to zero, implying that any animal beyond this distance has virtually zero chance of being detected. So the area inside the outer limit of the buffer region includes the activity centres of all the animals that did, or could have, appeared in the survey data.
+
+\end{solution}}
+
+\end{parts}
+
+\end{questions}
+

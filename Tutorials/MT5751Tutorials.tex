@@ -1,0 +1,72 @@
+% Springer-Verlag Style
+% LateX header stuff:
+% -------------------
+\documentclass[10pt]{memoir}
+%\usepackage{svdlb2e}
+\usepackage[a4paper, margin=0.75in]{geometry}
+\usepackage{natbib}
+\usepackage{epsfig}
+\usepackage{amssymb,amsmath}
+\usepackage{etoolbox}
+\usepackage{enumitem,refcount} % for quesionts environment
+
+
+\usepackage[colorinlistoftodos,linecolor=gray,backgroundcolor=white]{todonotes}
+
+\makeindex
+
+% my command definitions
+\input{../new_commands}
+\renewcommand{\bibname}{References}
+
+\includeonly{
+ch_dist_ex,
+ch_cr_ex,
+ch_secr_ex,
+ch_occ_ex
+}
+
+\title{MT5751 Tutorials}
+\author{David Borchers, Stephen Buckland, Eric Rexstad}
+
+
+\begin{document}
+
+\newtoggle{solns}
+%\toggletrue{solns}
+\togglefalse{solns}
+
+\maketitle
+\setcounter{page}{5}
+% \include{ch_pref}
+ %\tableofcontents
+% \listoffigures
+ 
+ %\include{notes}
+\clearpage
+%\thispagestyle{empty}
+%\cleardoublepage
+\pagenumbering{arabic}
+\chapterstyle{bianchi}
+
+%\include{ch_pref}
+\include{ch_dist_ex}
+\include{ch_cr_ex}
+\include{ch_secr_ex}
+\include{ch_occ_ex}
+%------------------------------------------------------------------------------------
+% Appendices
+%------------------------------------------------------------------------------------
+%\include{ch_appx}
+
+%------------------------------------------------------------------------------------
+% Bibliography
+%------------------------------------------------------------------------------------
+\bibliographystyle{authordatedlb}
+%\markbothsame{References}
+\addcontentsline{toc}{chapter}{References}
+\pagestyle{myheadings}
+\bibliography{../dlb}
+
+
+\end{document}

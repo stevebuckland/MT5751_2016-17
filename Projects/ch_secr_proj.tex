@@ -1,0 +1,74 @@
+\chapter{SECR\label{sec:secr_proj}}
+
+
+\begin{center}
+\textbf{Submit via MMS before midnight on Monday the 30th March}\footnote{The School lateness penalty policy is as follows: A late piece of work is penalised with an initial penalty of 15\% of the maximum available mark (or 3 marks if anyone is marking on the University's 20-point scale), and then a further 5\% (1 mark on the 20-point scale) per 8-hour period, of part thereof.}
+\end{center}
+
+\subsection*{The Data}
+\addcontentsline{toc}{section}{Data}
+
+These data are from an ongoing camera-trap study in the Boland mountains of South Africa. This particular dataset is from  2010. Cameras were placed in pairs along routes that leopards are believed to use, with cameras facing each other so as to get photos of both sides of the animals passing them. Although leopards are believed to prefer the chosen routes, the habitat is quite open and it is easy for leopards to move through it off these routes. The surveyors believe that male leopards tend to dominate the routes, while females tend to avoid them. The vast majority of captures are of male leopards (it is possible to distinguish males from female in photographs) and the data presented here are for males only.
+
+The data span a 13-week period, during which cameras were checked weekly and a record kept for each pair of cameras of each individual that was detected each week. Leopards were identified by visual inspection of photos and individual identification is believed to be reliable. We assume no leopards were lost or recruited over the study period.
+
+The capture history data are in the \texttt{R} object \verb|BolandCH.rda| on the Exercises and Projects folder on MMS and a mask with some geographic variables in its attributes is in the \texttt{R} object \verb|BolandMask.rda| on the Exercises and Projects folder on MMS. You can load them into \verb|R| as follows:
+
+\begin{verbatim}
+load(BolandCH.rda)
+load(BolandMask.rda)
+\end{verbatim}
+
+\noindent
+The following produces a readable plot for these data:
+
+\begin{verbatim}
+plot(BolandCH,border=0,rad=500,tracks=TRUE,
+  icolour=colors()[seq(2,202,10)],gridlines=FALSE)
+\end{verbatim}
+
+It is convenient to extract the traps from the capture history object, which you can do by \texttt{ cameras=traps(BolandCH)}. There are a number of covariates attached to the mask, which may be useful in modelling leopard distribution in space. See \texttt{summary(BolandMask)} for a summary of them. The covariates are as follows:
+
+\begin{description}
+\item[alt] altitude.
+\item[Landuse] Landuse category (1=Natural, 2=Cultivated, 3=Degraded, 4=Plantation).
+\item[Natural] binary variable: 1=Natural land use category, 0=not.
+\item[dist2.Urban] distance to closest Urban land use category cell.
+\item[dist2.Water] distance to closest Water land use category cell.
+\item[dist2.Natural] distance to closest Natural land use category cell.
+\item[LUfactor] Landuse category as a factor variable.
+\end{description}
+
+%---------------------------------------------------------
+\subsection*{Plotting Mask Covariates}
+\addcontentsline{toc}{section}{Plotting Mask Covariates}
+
+You can plot the covariates using commands like those below (which does an image plot of altitudes in the mask and overlays to trap locations on this).
+
+\begin{verbatim}
+plot(Boland.mask1,covariate="alt",axes=TRUE,plottype="shaded",legend=FALSE,
+     add=FALSE,breaks=15,col=terrain.colors(20),mesh=NA)
+plot(cameras,add=TRUE)
+\end{verbatim}
+
+\noindent
+You will notice from this plot that there are ``holes'' in the mask. These are pixels corresponding to urban areas and water bodies - both of which are unsuitable habitat for leopards. You can get an idea of where the urban areas and water bodies are by plotting \texttt{dist2Urban} and \texttt{dist2.Water} instead of \texttt{alt}, using commands similar to those above. 
+
+
+%---------------------------------------------------------
+\subsection*{Model Fitting and Comparison}
+\addcontentsline{toc}{section}{Model fitting}
+
+Obtain the best estimate that you can of the number of male leopards within the area covered by \verb|BolandMask|. You should consider models that allow density to vary in space as well as models that assume it is constant. Restrict yourself to consideration of \verb|alt| and \verb|dist2.Water| as variables that might affect leopard density. You should consider regression spline smooths of these variables, and to this end, read the vignette \verb|secr-densitysurfaces.pdf|, and the section \textbf{Regression splines} in particular. The \verb|secr| command \verb|region.N| is useful for estimating abundance from a density surface.
+
+
+\subsection*{Your Report}
+
+Write up your analysis in the form of a short scientific paper. Your paper should be {\underline no more than three A4 pages} and must include a brief abstract. You should describe clearly (using equations as appropriate) the estimation methods that you used for point and interval estimation. \\
+
+Your report should summarise the key aspects of your results and the conclusions that you draw from these analyses. \\
+
+Do not include any code in your paper, but DO include the code you used to obtain the estimates in an appendix. 
+
+
+

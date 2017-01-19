@@ -1,0 +1,28 @@
+\chapter{Capture-Recapture\label{ch:cr_proj}}
+
+
+
+\begin{center}
+\textbf{Submit via MMS before midnight on Monday the 2nd March}\footnote{The School lateness penalty policy is as follows: A late piece of work is penalised with an initial penalty of 15\% of the maximum available mark (or 3 marks if anyone is marking on the University's 20-point scale), and then a further 5\% (1 mark on the 20-point scale) per 8-hour period, of part thereof.}
+\end{center}
+
+\subsection*{The Datasets}
+
+The file \verb|mrds.rda| in folder ``\verb|Exercises and Projects|'' on MMS contains data from the survey of numbers that we did in class when dealing with mark-recapture distance sampling. It is an \verb|R| data frame that has four columns: \verb|ch| is capture histories (two different students are the two ``occasions''), \verb|x| is perpendicular distance (rounded to the nearest integer), \verb|big| is a binary variable indicating whether the number (``animal'') was big (=1) or not (=0), and \verb|fog| is a binary variable indicating whether the number was detected from the transect that had ``fog'' (=1) or not (=0). \\
+
+The file \verb|skink.rda| in folder ``\verb|Exercises and Projects|'' on MMS contains the data from the survey of skinks on North Brother Island, New Zealand, which we looked at in class. It is an \verb|R| data frame that contains a single column \verb|ch| with the capture histories from 7 capture occasions. \\
+
+After downloading these datasets onto your computer, load them into \verb|R| using the command \verb|load|. 
+
+
+\subsection*{Your Analysis and Report}
+
+Having loaded these dataframes into \verb|R|, use the \verb|R| package \verb|RMark| to obtain the best estimates you can of the number of numbers (``animals'') in the strips that we surveyed in class, and separately the number of skinks on North Brother Island, together with 95\% confidence intervals. \\
+
+Write up your analysis in the form of a short scientific paper. Your paper should be {\underline no more than three A4 pages} and must include a brief abstract. You should describe clearly (using equations as appropriate) the estimation methods that you used for point and interval estimation. \\
+
+In the case of the mark-recapture distance sampling data from the in-class survey, you must also explain clearly the difference between a capture-recapture estimator in which the variable \verb|x| is an explanatory variable, and a mark-recapture distance sampling Horvitz-Thompson-like estimator. (For this purpose assume that \verb|x| has not been rounded to the nearest integer.) \\
+
+Your report should summarise the key aspects of your results for both surveys, including an interpretation of the estimated parameters, as well as the conclusions you draw from these analyses. \\
+
+Do not include any code in your paper, but DO include the code you used to obtain the estimates in an appendix. 

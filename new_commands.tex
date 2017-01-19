@@ -1,0 +1,145 @@
+%\newcounter{exc}[section]
+%\setcounter{exc}{1}
+%\newenvironment{exercise}{\noindent
+%\arabic{chapter}.\arabic{section}.\arabic{exc}: }
+%{\stepcounter{exc}}
+%\newcommand{\bex}{\begin{exercise}}
+%\newcommand{\eex}{\end{exercise}}
+
+\newenvironment{solution}{
+% \iftoggle{solns}{
+  \noindent \textbf{Solution: }
+%}
+}
+
+
+%\newcounter{qcount}
+%\newenvironment{questions}
+%  {\refstepcounter{qcount}\label{qcount\theqcount}%
+%   \begin{itemize}[label=\protect\getpagerefnumber{qcount\theqcount}.\protect\qcountnum]}
+%  {\end{itemize}}
+%\newcommand{\qi}[1]{\def\qcountnum{#1}\item}
+
+% Question environments borrowed from examtemplate.sty
+% ----------------------------------------------------
+% Question formatting
+\newcounter{quno}
+\renewcommand{\thequno}{\textbf{\arabic{quno}.}}
+\newenvironment{questions}{%
+  \begin{list}{\thequno}{\usecounter{quno}%
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{26mm}%
+      \setlength{\leftmargin}{15mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{3mm}%
+      \setlength{\labelsep}{12mm}%
+      \setlength{\listparindent}{5mm}}}{%
+  \end{list}}
+
+\newcounter{partno}
+\renewcommand{\thepartno}{(\alph{partno})}
+\newenvironment{parts}{%
+  \begin{list}{\thepartno}{\usecounter{partno}
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{3mm}%
+      \setlength{\leftmargin}{8mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{5mm}%
+      \setlength{\labelsep}{6mm}%
+      \setlength{\listparindent}{0mm}}}{%
+  \end{list}}
+
+\newcounter{subpartno}
+\renewcommand{\thesubpartno}{(\roman{subpartno})}
+\newenvironment{subparts}{%
+  \begin{list}{\thesubpartno}{\usecounter{subpartno}%
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{3mm}%
+      \setlength{\leftmargin}{12mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{5mm}%
+      \setlength{\labelsep}{4mm}%
+      \setlength{\listparindent}{0mm}}}{%
+  \end{list}}
+
+% Questions in a Section A / Section B / Section C format
+\newcounter{aquno}
+\renewcommand{\theaquno}{\textbf{A\arabic{aquno}.}}
+\newenvironment{aquestions}{%
+  \begin{center}
+    \large\bfseries SECTION~A
+  \end{center}
+  \begin{list}{\theaquno}{\usecounter{aquno}%
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{26mm}%
+      \setlength{\leftmargin}{15mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{3mm}%
+      \setlength{\labelsep}{12mm}%
+      \setlength{\listparindent}{5mm}}}{%
+  \end{list}\vspace{20pt}}
+
+\newcounter{bquno}
+\renewcommand{\thebquno}{\textbf{B\arabic{bquno}.}}
+\newenvironment{bquestions}{%
+  \begin{center}
+    \large\bfseries SECTION~B
+  \end{center}
+  \begin{list}{\thebquno}{\usecounter{bquno}%
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{26mm}%
+      \setlength{\leftmargin}{15mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{3mm}%
+      \setlength{\labelsep}{12mm}%
+      \setlength{\listparindent}{5mm}}}{%
+  \end{list}\vspace{20pt}}
+
+\newcounter{cquno}
+\renewcommand{\thecquno}{\textbf{C\arabic{cquno}.}}
+\newenvironment{cquestions}{%
+  \begin{center}
+    \large\bfseries SECTION~C
+  \end{center}
+  \begin{list}{\thecquno}{\usecounter{cquno}%
+      \setlength{\parsep}{3mm}%
+      \setlength{\itemsep}{26mm}%
+      \setlength{\leftmargin}{15mm}%
+      \setlength{\rightmargin}{0mm}%
+      \setlength{\labelwidth}{3mm}%
+      \setlength{\labelsep}{12mm}%
+      \setlength{\listparindent}{5mm}}}{%
+  \end{list}}
+
+
+% Marks for questions and parts
+\newcommand{\qumarks}[1]{\marginnote{\textbf{[#1]}}}
+% ----------------------------------------------------
+
+
+\newcommand{\beg}{\begin{example}}
+\newcommand{\eeg}{\end{example}}
+\newcommand{\schist}[1]{\mbox{\tiny{#1}}}
+\newcommand{\chist}[1]{\mbox{\scriptsize{#1}}}
+\newcommand{\agemo}[1]{\mbox{$\underline{\omega}_{\/\downarrow #1}$}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wh}[1]{\mbox{$\widehat{#1}$}}
+\newcommand{\bv}{\begin{verbatim}}
+\newcommand{\ev}{\end{verbatim}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bfig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+%\newcommand{\pref}[1]{\protect\ref{#1}}
+\newcommand{\plab}[1]{\protect\label{#1}}
+\newcommand{\be}{\begin{eqnarray}}
+\newcommand{\bes}{\begin{eqnarray*}}
+\newcommand{\ee}{\end{eqnarray}}
+\newcommand{\ees}{\end{eqnarray*}}
+\newcommand{\bo}[1]{\bf #1}
+\newcommand{\bm}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\tm}[1]{\mbox{\tiny{$#1$}}}
+\newcommand{\vc}[2]{\mbox{$ \left[ \begin{array}{c} #1\\ \vdots \\ #2 
+ \end{array} \right] $}}
+\newcommand{\mt}[4]{\mbox{$ \left[ \begin{array}{c,c,c} #1 & \cdots & #2\\ 
+ \vdots & \ddots & \vdots\\ #3 & \cdots & #4 \end{array} \right] $}}

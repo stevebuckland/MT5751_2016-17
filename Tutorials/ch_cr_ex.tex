@@ -1,0 +1,208 @@
+\chapter{Capture-Recapture\label{ch:cr_ex}}
+
+
+Notation used here is the same as that used in lectures.
+
+\begin{questions}
+
+\item Consider a two-sample mark-recapture survey in which all animals have a constant probability of being captured, and this is the same on all occasions.
+
+\begin{parts}
+
+\item Write down the likelihood for abundance, $N$, given the data $(n_1, n_2, m_2)$.
+
+{\begin{solution}
+\begin{eqnarray*}
+L(N,p)&=&{N\choose n_1}p^{n_1}(1-p)^{N-n_1}\times
+{N-n_1\choose u_2}p^{u_2}(1-p)^{N-n_1-u_2}\times
+{n_1\choose m_2}p^{m_2}(1-p)^{n_1-m_2}
+\end{eqnarray*}
+\noindent
+where $u_2=n_2-m_2$ is the number of unmarked individuals caught on occasion 2. Collecting terms and cancelling appropriately, this gives
+\begin{eqnarray*}
+L(N,p)&=&
+\left(
+\frac{N!}{n_1!(n_2-m_2)!m_2!(N-n)!}\right)p^{n_1+n_2}(1-p)^{2N-(n_1+n_2)}
+\end{eqnarray*}
+\noindent
+where $n=n_1+n_2-m_2$, the number of individuals caught in total
+\end{solution}}
+
+\item Maximise the log-likelihood with respect to $N$ and $p$ and hence show that the maximum likelihood estimator of $N$ is $[(n_1+n_2)/2]^2/m_2$.
+
+{\begin{solution}
+Logging the equation above, and absorbing terms without parameters into a constant $C$, we get the log-likelihood
+\begin{eqnarray*}
+l(N,p)=\log\{L(N,p)\}&=&\ln\left(\frac{N!}{(N-n)!}\right)+(n_1+n_2)\ln(p)+[2N-(n_1+n_2)]\ln(1-p)+C
+\end{eqnarray*}
+\noindent
+Differentiating with respect to $N$ (remembering that $\frac{d\log(N!)}{dN}\approx\log(N)$) and $p$ and setting the derivatives to zero:\todo{correction}
+\begin{eqnarray}
+\frac{\partial l}{\partial N}=0\Rightarrow
+\ln\left(\frac{(N-n)}{N}\right)
+&=&\ln\{(1-p)^2\} \nonumber \\
+\Rightarrow 1-\frac{n}{N}&=&1-p(2-p) \nonumber \\
+\Rightarrow \frac{n}{N}&=&p(2-p) \label{eq:dldN} \\
+\frac{\partial l}{\partial p}=0\Rightarrow
+\frac{(n_1+n_2)}{p}&=&\frac{2N-(n_1+n_2)}{1-p} \nonumber \\
+\Rightarrow\frac{1}{p}-1&=&\frac{2N}{(n_1+n_2)}-1 \nonumber \\
+\Rightarrow N&=&\frac{(n_1+n_2)}{2p}\label{eq:dldp}
+\end{eqnarray}
+Substituting (\ref{eq:dldp}) into (\ref{eq:dldN}) gives
+\begin{eqnarray}
+\frac{2pn}{(n_1+n_2)}&=&p(2-p) \nonumber \\
+\Rightarrow\hat{p}&=&\frac{2(n_1+n_2)-2n}{(n_1+n_2)}\;=\;
+\frac{2(n_1+n_2)-2[(n_1+n_2)-m_2]}{(n_1+n_2)} \nonumber \\
+\Rightarrow\hat{p}&=&\frac{2m_2}{(n_1+n_2)}\;=\;\frac{m_2}{(n_1+n_2)/2}
+\end{eqnarray}
+And substituting into (\ref{eq:dldN}) gives 
+\begin{eqnarray}
+\hat{N}&=&\frac{\left(\frac{(n_1+n_2)}{2}\right)^2}{m_2}
+\end{eqnarray}
+
+\end{solution}}
+
+
+
+\item Show that the likelihood in (a) above is a multinomial likelihood in which the frequencies with which capture histories 11, 10, 01 and 00 are observed are the random variables. (It may help to start with a likelihood written in terms of $(u_1, u_2, m_2)$ rather than $(n_1, n_2, m_2)$.)
+
+{\begin{solution}
+Rewriting the likelihood in terms of $(u_1, u_2, m_2)$ gives\todo{correction}
+\begin{eqnarray*}
+L(N,p)&=&{N\choose u_1}p^{u_1}(1-p)^{N-u_1}\times
+{N-u_1\choose u_2}p^{u_2}(1-p)^{N-u_1-u_2}\times
+{u_1\choose m_2}p^{m_2}(1-p)^{u_1-m_2}
+\end{eqnarray*}
+\noindent
+Looking at the combinatorial terms and canceling we get:
+\begin{eqnarray*}
+{N\choose u_1}{N-u_1\choose u_2}{u_1\choose m_2}
+&=&\frac{N!}{u_1!(N-u_1)!}\frac{(N-u_1)!}{u_2!(N-u_1-u_2)!}\frac{u_1!}{m_2!(u_1-m_2)!} \\
+&=&\frac{N!}{u_2!(N-u_1-u_2)!m_2!(u_1-m_2)!} \\
+&=&\frac{N!}{u_2!(N-n)!m_2!(u_1-m_2)!} \\
+\end{eqnarray*}
+\noindent
+This is the combinatorial term for a multinomial with $u_2$ animals with capture histories (01), $(N-n)$ animals with capture histories (00), $m_2$ with capture histories (11), and $(u_1-m_2)$ with capture histories (10). The corresponding probabilities are $[(1-p)p]^{u_2}$, $[(1-p)^2]^{N-n}$, $[p^2]^{m_2}$ and $[p(1-p)]^{u_2}$. So we need to see if
+\begin{eqnarray*}
+[(1-p)p]^{u_2}[(1-p)^2]^{N-n}[p^2]^{m_2}[p(1-p)]^{u_1-m_2}
+\end{eqnarray*}
+\noindent
+is equal to
+\begin{eqnarray*}
+p^{u_1}(1-p)^{N-u_1}p^{u_2}(1-p)^{N-u_1-u_2}p^{m_2}(1-p)^{u_1-m_2}.
+\end{eqnarray*}
+\noindent
+In the first case $p$ appears with a power $u_2+2m_2+u_1-m_2=u_1+u_2+m_2$, while in the second case $p$ appears with a power $u_1+u_2+m_2$. So the powers of $p$ are the same in the two cases. 
+
+What about the powers of $(1-p)$? In the first case $(1-p)$ appears with a power $u_2+2N-2n+u_1-m_2=u_2+2N-2(u_1+u_2)+u_1-m_2=2N-u_2-u_1-m_2$, while in the second cases $(1-p)$ appears with a power $N-u_1+N-u_1-u_2+u_1-m_2=2N-u_1-u_2-m_2$. So the powers of $(1-p)$ are the same in the two cases.
+
+Hence the multinomial likelihood
+\begin{eqnarray*}
+L(N,p)&=&\frac{N!}{u_2!(N-n)!m_2!(u_1-m_2)!}[(1-p)p]^{u_2}[(1-p)^2]^{N-n}[p^2]^{m_2}[p(1-p)]^{u_1-m_2}
+\end{eqnarray*}
+\noindent
+is equal to the likelihood in (a) above.
+\end{solution}}
+
+\item Show that when the data are reduced to the frequencies of animals caught 0, 1, or 2 times, the likelihood is also a multinomial likelihood.
+
+{\begin{solution}
+The frequencies are $f_1=u_1+u_2$, $f_2=m_2$, and  $f_0=N-(f_1+f_2)$. Also, $n=f_1+f_2$. When only frequencies are observed, the cells for $u_1$ and $u_2$ are combined into a single cell. And since the two capture histories involved are mutually exclusive, it has cell probability $[p(1-p)]+[(1-p)p]=2p(1-p)$. To get the correct combinatorial term, we need to divide the likelihood by the number of ways that $f_1$ individuals can be split into a set of $u_1$ and another of $u_2$, i.e. divide by $f_1!/(u_1!u_2!)$. This gives
+\begin{eqnarray*}
+L(N,p)&=&\left(\frac{u_1!u_2!}{f_1!}\right)\left(\frac{N!}{u_1!u_2!f_2!(N-(f_1+f_2))!}\right)[2p(1-p)]^{f_1}[p^2]^{f_2}[(1-p)^2]^{N-(f_1+f_2)} \\
+&=&\left(\frac{N!}{f_1!f_2!f_0!}\right)[2p(1-p)]^{f_1}[p^2]^{f_2}[(1-p)^2]^{f_0}
+\end{eqnarray*}
+\noindent
+which is a multinomial pmf.
+
+\end{solution}}
+
+\end{parts}
+
+\item There are known to be 60 marked animals in a population of unknown size, $N$. A survey is conducted to estimate $N$. On it 50 animals are detected and 20 of them are found to have marks.
+
+\begin{parts}
+
+\item Assuming that marked and unmarked animals are equally catchable, and that animals are detected independently of each other, write down an expression for the probability of detecting 50 animals on the survey if there are $N$ animals in the population.
+
+{\begin{solution}
+\begin{eqnarray*}
+L(N,p)&=&\left(\frac{N!}{50!(N-50)!}\right)p^{50}(1-p)^{N-50}
+\end{eqnarray*}
+\end{solution}}
+
+\item Estimate the probability ($p$) that an animal is detected on the survey.
+
+{\begin{solution}
+The number of marked individuals that are captured can be modelled as a binomial random variable with parmaters 60 (number of ``trials'') and $p$. Of the $n_1=60$ ``trials'', $m_2=20$ are ``successes'' (i.e., were captured on the second occasion), and the MLE for $p$ from a binomial with 60 ``trials'' 20 ``successes'' is $\hat{p}=20/60=1/3$.
+\end{solution}}
+
+\item Consider the expression in (a) to be a likelihood function for $N$. Using the estimate of $p$ from (b), show that the MLE for $N$, given the estimate of $p$ and the data, is 150.
+
+{\begin{solution}
+Replacing $p$ by $\hat{p}=1/3$ in the likelihood in (a), we have a binomial with parameters $N$ (unknown) and $p=1/3$, and number of ``successes'' $n_1=50$. The MLE of $N$ is $\hat{N}=50/(1/3)=150$.
+\end{solution}}
+
+\end{parts}
+
+
+\item Consider a mark-recapture model of type M$_{tb}$. A ``full'' M$_{tb}$ model allows capture probability to change between capture occasions and to depend on whether or not an animal has been captured before. Such a model has the probability of catching a previously uncaught animal on occasion $s$ as $p_{s}$ (for $s=1,\ldots,S$). This model has $2S+1$ parameters ($2S$ capture probability parameters in addition to $N$). But a mark-recapture survey with $S$ occasions generates only $2S-1$ bits of data (the number of unmarked animals on occasion 1 and the number of marked and unmarked animals on each of the remaining $S-1$ occasions). You can't sensibly estimate $2S+1$ parameters from $2S-1$ bits of data - the parameters are said to be ``unidentifiable''.
+
+Now consider a model in which the capture probability for marked animals on occasion $s$ ($c_s$, say) is equal to a constant multiple of the capture probability $p_s$, for unmarked animals on this occasion: $c_s=\beta p_s$ for some unknown $\beta$. (Call this a ``reduced'' M$_{tb}$ model.)
+
+\begin{parts}
+
+\item How many parameters does the reduced M$_{tb}$ model have? 
+
+{\begin{solution}
+It has $S+1$ parameters: $p_s$ for $s=1,\ldots,S$ and $\beta$.
+\end{solution}}
+
+\item Write down these parameters for the case in which $S=3$, and say what each is.
+
+{\begin{solution}
+\begin{description}
+\item [$0\leq p_1\leq 1$] is the probability of capture of unmarked animals on occasion 1.
+\item [$0\leq p_2\leq 1$] is the probability of capture of unmarked animals on occasion 2.
+\item [$0\leq p_3\leq 1$] is the probability of capture of unmarked animals on occasion 3.
+\item [$0\leq\beta\leq 1$] is the effect on capture probability, of having been captured before.
+\end{description}
+\end{solution}}
+
+\item Write down the likelihood for abundance, $N$, given the data $(n_1, u_2, m_2, u_3, m_3)$ for a survey with $S=3$.
+
+{\begin{solution}
+Let $n_c$ be the number of individuals with capture history $c$. The likelihood is then
+\begin{eqnarray*}
+L(N,\{p_s\},\beta)&=&\prod_{s=1}^S\left(\frac{U_s!}{u_s!(U_s-u_s)!}\right)p_s^{u_s}[1-p_s]^{U_s-u_s}\times 
+\left(\frac{M_s!}{m_s!(M_s-m_s)!}\right)(\beta p_s)^{m_s}[1-\beta p_s]^{M_s-m_s}
+\end{eqnarray*}
+\noindent
+where $U_1=N$, $u_1=n_1$, $M_1=m_1=0$, $U_s=N-\sum_{t=1}^su_t$ and $M_s=\sum_{t=2}^su_{t-1}$.
+
+\end{solution}}
+
+\item Write down the likelihood for abundance, $N$, given the capture history frequencies: $n_c$, the number of individuals with capture history $c$ ($s=1,2,3$).
+
+{\begin{solution}
+Let $n_c$ be the number of individuals with capture history $c$. The likelihood is then
+\begin{eqnarray*}
+L(N,\{p_s\},\beta)&=&\left(\frac{N!}{n_{100}!n_{110}!n_{101}!n_{111}!n_{010}!n_{011}!n_{001}!(N-n)!}\right) \\
+& &\times\left[p_1(1-\beta p_2)(1-\beta p_3)\right]^{n_{100}}\left[p_1\beta p_2(1-\beta p_3)\right]^{n_{110}}\left[p_1(1-\beta p_2)\beta p_3\right]^{n_{101}} \\
+& & \times\left[p_1\beta p_2\beta p_3\right]^{n_{111}}\left[(1-p_1)p_2(1-\beta p_3)\right]^{n_{010}}\left[(1-p_1)p_2\beta p_3\right]^{n_{011}} \\
+& & \times\left[(1-p_1)(1-p_2)p_3\right]^{n_{001}}
+\left[(1-p_1)(1-p_2)(1-p_3)\right]^{N-n}
+\end{eqnarray*}
+
+\end{solution}}
+
+\item By finding the $S$ at which there are at least as many bits of data as parameters, find the minumum number of surveys required for the parameters of the reduced M$_{tb}$ to be identifiable.
+
+{\begin{solution}
+The model has $S+1$ parameters. There are $2S-1$ independent bits of data gathered on the survey. So for the parameters to identifiable, we need $S+1\leq 2S-1$, i.e. $S\geq 2$.
+\end{solution}}
+
+\end{parts}
+
+\end{questions}
+

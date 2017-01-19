@@ -1,0 +1,73 @@
+% Springer-Verlag Style
+% LateX header stuff:
+% -------------------
+\documentclass[10pt]{memoir}
+%\usepackage{svdlb2e}
+\usepackage[a4paper, margin=0.75in]{geometry}
+\usepackage{natbib}
+\usepackage{epsfig}
+\usepackage{amssymb,amsmath}
+\usepackage{etoolbox}
+\usepackage{enumitem,refcount} % for quesionts environment
+
+
+\usepackage[colorinlistoftodos,linecolor=gray,backgroundcolor=white]{todonotes}
+
+\makeindex
+
+% my command definitions
+\input{../new_commands}
+\renewcommand{\bibname}{References}
+
+\includeonly{
+ch_dist_comp,
+ch_cr_comp,
+ch_secr_comp,
+ch_occ_comp
+}
+
+\title{MT5751 Projects}
+\author{David Borchers, Stephen Buckland, Eric Rexstad}
+
+
+\begin{document}
+
+\newtoggle{solns}
+%\toggletrue{solns}
+\togglefalse{solns}
+
+\maketitle
+\setcounter{page}{5}
+% \include{ch_pref}
+% \tableofcontents
+% \listoffigures
+ 
+ %\include{notes}
+\clearpage
+%\thispagestyle{empty}
+%\cleardoublepage
+\pagenumbering{arabic}
+\chapterstyle{bianchi}
+
+%\include{ch_pref}
+\include{ch_dist_comp}
+\include{ch_cr_comp}
+\include{ch_secr_comp}
+\include{ch_occ_comp}
+
+%------------------------------------------------------------------------------------
+% Appendices
+%------------------------------------------------------------------------------------
+%\include{ch_appx}
+
+%------------------------------------------------------------------------------------
+% Bibliography
+%------------------------------------------------------------------------------------
+\bibliographystyle{authordatedlb}
+%\markbothsame{References}
+\addcontentsline{toc}{chapter}{References}
+\pagestyle{myheadings}
+\bibliography{../dlb}
+
+
+\end{document}

@@ -1,0 +1,66 @@
+\chapter{Capture-Recapture\label{ch:cr_comp}}
+
+
+This document is to help you get started with the \verb|R| package \verb|secr|. The package has extensive help, which you should use. In particular, you should read the vignettes \verb|secr.overview.pdf| and \verb|secr-datainput.pdf| to help you get going. You can get these by typing 
+
+\begin{verbatim}
+library(secr)
+?secr
+\end{verbatim}
+in your R window and then scrolling down in the help window that this opens, until you find links to these documents.\\
+
+We will play with the \verb|stoatDNA| dataset to get used to \verb|secr|.
+
+\begin{verbatim}
+data(stoatDNA)   # get stoat hair snare dataset
+?stoatDNA        # find out something about it
+summary(stoatCH) # look at the capture histories
+plot(stoatCH)    # plot it
+\end{verbatim}
+
+What kind of detectors were used (single-catch traps, multi-catch traps, binary detectors or count detectors)?
+
+How many capture occasions were there?
+
+How many stoats were detected over the whole survey?
+
+How many stoats were captures once, twice, three times, ...?
+
+Extract the trap data from \verb|stoatCH| and plot it:
+
+\begin{verbatim}
+traps=traps(stoatCH)
+plot(traps)
+\end{verbatim}
+
+Now fit a model to the data:
+
+\begin{verbatim}
+stoat.model.HN=secr.fit(stoatCH, buffer = 1000, detectfn = 0)
+\end{verbatim}
+
+Try that again, with the additional argument \verb|print.level=0| (which is an argument of the optimiser \verb|nlm| that \verb|secr.fit| uses to find the maximum of the likelihood function):
+
+\begin{verbatim}
+stoat.model.HN <- secr.fit(stoatCH, buffer = 1000, detectfn = 0,trace=0)
+\end{verbatim}
+Do you see what changed while fitting the model with this extra argument?\\
+
+Now look at the output from the fit:
+\begin{verbatim}
+stoat.model.HN       # look at the estimates
+\end{verbatim}
+
+Verify that you understand what the ``\verb|Beta parameters|'' and ``\verb|Fitted (real) parameters|'' are by calculating the latter manually from the former.\\
+
+Plot the detection function:
+\begin{verbatim}
+plot(stoat.model.HN,xval=0:1000,sigmatick=TRUE,limits=TRUE,ylim=c(0,0.12)) 
+\end{verbatim}
+
+Do you understand what the solid, dashed and vertical lines are? See the help for \verb|plot.secr| if you do not. \\
+
+Now try fitting models with some other detection functions. (See the \verb|secr| help pages on \verb|detectfn| for the options available to you - don't try them all, there are way too many!)\\
+
+Try fitting models of type M$t$, M$b$, M$h$ for $\sigma$ and/or $g_0$. (Table 5 in the vignette \verb|secr.overview.pdf| is useful here - but only consider \verb|t|, \verb|T|, \verb|b|, \verb|B| and \verb|h2|.)
+
